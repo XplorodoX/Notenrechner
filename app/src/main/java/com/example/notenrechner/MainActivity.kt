@@ -34,6 +34,7 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
     var maxPunkte by remember { mutableStateOf("") }
     var modus by remember { mutableStateOf(0) } // 0 = IHK, 1 = Normal
     var note by remember { mutableStateOf("") }
+    var verbal by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -45,7 +46,13 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
             Text("Modus:")
             Spacer(Modifier.width(8.dp))
-            SegmentedButton(selectedIndex = modus, onIndexSelected = { modus = it })
+            SegmentedButton(selectedIndex = modus, onIndexSelected = {
+                modus = it
+                // Reset der Ausgabe und ggf. Felder beim Wechseln
+                note = ""
+                verbal = ""
+                if (modus == 0) maxPunkte = "" // im IHK-Modus wird max nicht verwendet
+            })
         }
         OutlinedTextField(
             value = punkte,
@@ -74,7 +81,8 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
                         "IHK: Punkte müssen zwischen 0 und 100 liegen."
                     } else {
                         val n = com.example.notenrechner.Notenrechner.berechneIHK(p)
-                        String.format(java.util.Locale.GERMANY, "Note: %.1f (IHK)", n)
+                        verbal = com.example.notenrechner.Notenrechner.verbaleBewertung(n)
+                        String.format(java.util.Locale.GERMANY, "%.1f", n)
                     }
                 }
                 else -> {
@@ -84,7 +92,8 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
                         "Punkte müssen zwischen 0 und $m liegen."
                     } else {
                         val n = com.example.notenrechner.Notenrechner.berechneNormal(p, m)
-                        String.format(java.util.Locale.GERMANY, "Note: %.1f (Normal)", n)
+                        verbal = com.example.notenrechner.Notenrechner.verbaleBewertung(n)
+                        String.format(java.util.Locale.GERMANY, "%.1f", n)
                     }
                 }
             }
@@ -92,7 +101,18 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
             Text("Berechnen")
         }
         if (note.isNotEmpty()) {
-            Text(note, style = MaterialTheme.typography.titleLarge)
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Ergebnis", style = MaterialTheme.typography.titleLarge)
+                    val modusText = if (modus == 0) "IHK" else "Normal"
+                    Text("Modus: $modusText", style = MaterialTheme.typography.bodyMedium)
+                    Text("Note: $note", style = MaterialTheme.typography.headlineMedium)
+                    if (verbal.isNotEmpty()) {
+                        Text("Bewertung: ${verbal.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.getDefault()) else it.toString() }}",
+                            style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+            }
         }
     }
 }

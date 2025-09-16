@@ -69,4 +69,19 @@ object Notenrechner {
         val prozent = punkte * 100.0 / maxPunkte
         return ((6.0 - 1.0) * (100 - prozent) / 100) + 1.0
     }
+
+    // Verbale Bewertung nach üblichen Grenzen
+    // sehr gut (1,0–1,5), gut (1,6–2,5), befriedigend (2,6–3,5),
+    // ausreichend (3,6–4,0), mangelhaft (4,1–4,9), ungenügend (5,0–6,0)
+    fun verbaleBewertung(note: Double): String {
+        val n = String.format(java.util.Locale.US, "%.1f", note).toDoubleOrNull() ?: note
+        return when {
+            n <= 1.5 -> "sehr gut"
+            n <= 2.5 -> "gut"
+            n <= 3.5 -> "befriedigend"
+            n <= 4.0 -> "ausreichend"
+            n <= 4.9 -> "mangelhaft"
+            else -> "ungenügend"
+        }
+    }
 }
