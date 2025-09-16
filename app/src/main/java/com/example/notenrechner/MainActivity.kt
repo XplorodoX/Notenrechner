@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +73,8 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
                     } else if (p < 0 || p > 100) {
                         "IHK: Punkte müssen zwischen 0 und 100 liegen."
                     } else {
-                        "Note: ${com.example.notenrechner.Notenrechner.berechneIHK(p)} (IHK)"
+                        val n = com.example.notenrechner.Notenrechner.berechneIHK(p)
+                        String.format(java.util.Locale.GERMANY, "Note: %.1f (IHK)", n)
                     }
                 }
                 else -> {
@@ -83,7 +84,7 @@ fun NotenrechnerScreen(modifier: Modifier = Modifier) {
                         "Punkte müssen zwischen 0 und $m liegen."
                     } else {
                         val n = com.example.notenrechner.Notenrechner.berechneNormal(p, m)
-                        "Note: %.1f (Normal)".format(n)
+                        String.format(java.util.Locale.GERMANY, "Note: %.1f (Normal)", n)
                     }
                 }
             }
