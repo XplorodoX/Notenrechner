@@ -226,6 +226,7 @@ fun HistoryRow(entry: HistoryEntry, onRemove: () -> Unit) {
     }
 }
 
+@Composable
 private fun badgeColorFor(verbal: String): Color = when (verbal.lowercase()) {
     "sehr gut" -> Color(0xFF2E7D32)
     "gut" -> Color(0xFF388E3C)
