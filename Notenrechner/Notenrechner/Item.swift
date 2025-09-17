@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum GradeMode: String, CaseIterable, Identifiable {
     case ihk = "IHK"
@@ -7,6 +8,20 @@ enum GradeMode: String, CaseIterable, Identifiable {
     var id: Self { self }
 
     var title: String { rawValue }
+    
+    var iconName: String {
+        switch self {
+        case .ihk: return "building.2.fill"
+        case .normal: return "function"
+        }
+    }
+    
+    var accentColor: Color {
+        switch self {
+        case .ihk: return .blue
+        case .normal: return .purple
+        }
+    }
 }
 
 struct HistoryEntry: Identifiable, Equatable {
