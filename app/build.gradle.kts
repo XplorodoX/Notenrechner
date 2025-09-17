@@ -5,26 +5,33 @@ plugins {
 }
 
 android {
-    namespace = "com.example.notenrechner"
+    namespace = "com.merluee.notenrechner"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.notenrechner"
+        applicationId = "com.merluee.notenrechner"
         minSdk = 30
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3 
+        versionName = "0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Mapping-Datei für bessere Crash-Analyse generieren
+            isDebuggable = false
+        }
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
         }
     }
     compileOptions {
@@ -36,6 +43,12 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    
+    packagingOptions {
+        jniLibs {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
