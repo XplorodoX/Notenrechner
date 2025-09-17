@@ -12,7 +12,7 @@ android {
         applicationId = "com.merluee.notenrechner"
         minSdk = 30
         targetSdk = 36
-        versionCode = 3 
+        versionCode = 4
         versionName = "0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
